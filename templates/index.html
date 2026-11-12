@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Digital AEGIS</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background:
+                linear-gradient(135deg, #07111f, #102a43);
+
+            color: white;
+        }
+
+
+        .container {
+            width: 90%;
+            max-width: 430px;
+
+            padding: 35px;
+
+            background: rgba(255,255,255,0.08);
+
+            border: 1px solid rgba(255,255,255,0.15);
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 20px 60px rgba(0,0,0,0.4);
+
+            backdrop-filter: blur(15px);
+        }
+
+
+        /* =========================
+           MAIN SCREEN
+        ========================= */
+
+        .logo {
+            text-align: center;
+
+            font-size: 31px;
+
+            font-weight: bold;
+
+            margin-bottom: 8px;
+        }
+
+
+        .subtitle {
+            text-align: center;
+
+            color: #b9c7d6;
+
+            margin-bottom: 32px;
+        }
+
+
+        label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-size: 14px;
+
+            color: #dbe7f3;
+        }
+
+
+        input {
+            width: 100%;
+
+            padding: 15px;
+
+            border-radius: 10px;
+
+            border: 1px solid #3b5269;
+
+            outline: none;
+
+            background: rgba(0,0,0,0.25);
+
+            color: white;
+
+            font-size: 17px;
+        }
+
+
+        input:focus {
+            border-color: #4da3ff;
+        }
+
+
+        button {
+            width: 100%;
+
+            margin-top: 20px;
+
+            padding: 15px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: #1677ff;
+
+            color: white;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+
+        button:hover {
+            background: #0d64dc;
+        }
+
+
+        button:disabled {
+            opacity: 0.6;
+
+            cursor: not-allowed;
+        }
+
+
+        .demo {
+            margin-top: 22px;
+
+            padding: 12px;
+
+            text-align: center;
+
+            font-size: 12px;
+
+            color: #ffd98a;
+
+            border: 1px solid rgba(255,210,100,0.25);
+
+            border-radius: 8px;
+
+            background: rgba(255,210,100,0.06);
+        }
+
+
+        /* =========================
+           RESULT SCREEN
+        ========================= */
+
+        #result {
+            display: none;
+
+            text-align: center;
+        }
+
+
+        .success-icon {
+            width: 70px;
+            height: 70px;
+
+            margin: 0 auto 18px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #1f9d68;
+
+            font-size: 35px;
+        }
+
+
+        .success-title {
+            font-size: 25px;
+
+            font-weight: bold;
+
+            margin-bottom: 25px;
+        }
+
+
+        /* =========================
+           RECEIVED AMOUNT
+        ========================= */
+
+        .money-section {
+            width: 100%;
+
+            margin-bottom: 20px;
+        }
+
+
+        .money-box {
+            width: 100%;
+
+            padding: 22px;
+
+            border-radius: 12px;
+
+            text-align: center;
+        }
+
+
+        .received-box {
+            background: rgba(31, 157, 104, 0.15);
+
+            border: 1px solid rgba(92, 255, 173, 0.35);
+        }
+
+
+        .money-title {
+            font-size: 14px;
+
+            color: #b9c7d6;
+
+            margin-bottom: 8px;
+        }
+
+
+        .received-value {
+            color: #5cffad;
+
+            font-size: 30px;
+
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           TRANSACTION DETAILS
+        ========================= */
+
+        .transaction-box {
+            background: rgba(255,255,255,0.08);
+
+            border-radius: 12px;
+
+            padding: 18px;
+
+            text-align: left;
+        }
+
+
+        .row {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            padding: 11px 0;
+
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+
+            font-size: 14px;
+        }
+
+
+        .row:last-child {
+            border-bottom: none;
+        }
+
+
+        .label-text {
+            color: #aebdcd;
+        }
+
+
+        .value {
+            font-weight: bold;
+
+            text-align: right;
+
+            word-break: break-word;
+        }
+
+
+        /* =========================
+           SIMULATION NOTICE
+        ========================= */
+
+        .simulated {
+            margin-top: 20px;
+
+            padding: 12px;
+
+            border-radius: 8px;
+
+            background: rgba(255,193,7,0.08);
+
+            border: 1px solid rgba(255,193,7,0.25);
+
+            color: #ffd98a;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           NEW TRANSACTION
+        ========================= */
+
+        .new-payment {
+            margin-top: 18px;
+
+            background: transparent;
+
+            border: 1px solid #47708f;
+
+            color: #dbe7f3;
+        }
+
+
+        .new-payment:hover {
+            background: rgba(255,255,255,0.08);
+        }
+
+
+        /* =========================
+           ERROR
+        ========================= */
+
+        #error {
+            display: none;
+
+            margin-top: 18px;
+
+            padding: 13px;
+
+            border-radius: 9px;
+
+            background: rgba(255,50,50,0.15);
+
+            border: 1px solid rgba(255,80,80,0.4);
+
+            color: #ffb0b0;
+
+            text-align: center;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- ==========================================
+         PHONE NUMBER SCREEN
+    =========================================== -->
+
+    <div id="paymentSection">
+
+        <div class="logo">
+            Digital AEGIS
+        </div>
+
+
+        <div class="subtitle">
+            Digital Payment Demonstration
+        </div>
+
+
+        <form id="paymentForm">
+
+
+            <label for="phone">
+                Enter Mobile Number
+            </label>
+
+
+            <input
+                type="tel"
+                id="phone"
+                maxlength="10"
+                pattern="[0-9]{10}"
+                placeholder="10-digit mobile number"
+                autocomplete="tel"
+                required
+            >
+
+
+            <button
+                type="submit"
+                id="enterButton">
+
+                Enter
+
+            </button>
+
+
+        </form>
+
+
+        <div class="demo">
+
+            DIGITAL AEGIS DEMONSTRATION<br>
+
+            This is a simulated transaction.
+            No real money is transferred.
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==========================================
+         SUCCESS SCREEN
+    =========================================== -->
+
+    <div id="result">
+
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+
+        <div class="success-title">
+            Transaction Successful
+        </div>
+
+
+
+        <!-- ONLY GREEN AMOUNT BOX -->
+
+        <div class="money-section">
+
+            <div class="money-box received-box">
+
+                <div class="money-title">
+                    Amount Received
+                </div>
+
+
+                <div class="received-value">
+                    + ₹1,000
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ======================================
+             TRANSACTION DETAILS
+        ======================================= -->
+
+        <div class="transaction-box">
+
+
+            <div class="row">
+
+                <span class="label-text">
+                    Mobile Number
+                </span>
+
+
+                <span
+                    class="value"
+                    id="resultPhone">
+                </span>
+
+            </div>
+
+
+
+            <div class="row">
+
+                <span class="label-text">
+                    Transaction ID
+                </span>
+
+
+                <span
+                    class="value"
+                    id="transactionId">
+                </span>
+
+            </div>
+
+
+
+            <div class="row">
+
+                <span class="label-text">
+                    Date & Time
+                </span>
+
+
+                <span
+                    class="value"
+                    id="paymentTime">
+                </span>
+
+            </div>
+
+
+
+            <div class="row">
+
+                <span class="label-text">
+                    SMS
+                </span>
+
+
+                <span
+                    class="value"
+                    id="smsStatus">
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ======================================
+             SIMULATION NOTICE
+        ======================================= -->
+
+        <div class="simulated">
+
+            This is a simulated payment for
+            the Digital AEGIS exhibition.
+
+            <br>
+
+            No real money has been transferred.
+
+        </div>
+
+
+
+        <!-- ======================================
+             NEW TRANSACTION
+        ======================================= -->
+
+        <button
+            type="button"
+            class="new-payment"
+            onclick="newPayment()">
+
+            New Transaction
+
+        </button>
+
+    </div>
+
+
+
+    <!-- ERROR MESSAGE -->
+
+    <div id="error"></div>
+
+
+</div>
+
+
+
+<script>
+
+
+/* ==========================================
+   ELEMENTS
+========================================== */
+
+const form =
+    document.getElementById(
+        "paymentForm"
+    );
+
+
+const enterButton =
+    document.getElementById(
+        "enterButton"
+    );
+
+
+const paymentSection =
+    document.getElementById(
+        "paymentSection"
+    );
+
+
+const result =
+    document.getElementById(
+        "result"
+    );
+
+
+const errorBox =
+    document.getElementById(
+        "error"
+    );
+
+
+
+/* ==========================================
+   PAYMENT SUBMISSION
+========================================== */
+
+form.addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+
+        errorBox.style.display =
+            "none";
+
+
+        const phone =
+            document.getElementById(
+                "phone"
+            ).value.trim();
+
+
+
+        /* CHECK PHONE NUMBER */
+
+        if (!/^[0-9]{10}$/.test(phone)) {
+
+            errorBox.textContent =
+                "Please enter a valid 10-digit mobile number.";
+
+            errorBox.style.display =
+                "block";
+
+            return;
+
+        }
+
+
+
+        /* PROCESSING */
+
+        enterButton.disabled =
+            true;
+
+        enterButton.textContent =
+            "Processing...";
+
+
+
+        try {
+
+
+            const response =
+                await fetch(
+                    "/pay",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            phone: phone
+                        })
+                    }
+                );
+
+
+
+            const data =
+                await response.json();
+
+
+
+            /* CHECK SERVER RESPONSE */
+
+            if (!data.success) {
+
+                throw new Error(
+                    data.error ||
+                    "Transaction failed."
+                );
+
+            }
+
+
+
+            /* ==================================
+               DISPLAY TRANSACTION INFORMATION
+            ================================== */
+
+            document.getElementById(
+                "resultPhone"
+            ).textContent =
+                phone;
+
+
+            document.getElementById(
+                "transactionId"
+            ).textContent =
+                data.transaction_id;
+
+
+            document.getElementById(
+                "paymentTime"
+            ).textContent =
+                data.time;
+
+
+            document.getElementById(
+                "smsStatus"
+            ).textContent =
+                data.sms_sent
+                    ? "Sent"
+                    : "Failed";
+
+
+
+            /* HIDE INPUT SCREEN */
+
+            paymentSection.style.display =
+                "none";
+
+
+            /* SHOW SUCCESS SCREEN */
+
+            result.style.display =
+                "block";
+
+        }
+
+
+        catch (error) {
+
+
+            errorBox.textContent =
+                error.message;
+
+
+            errorBox.style.display =
+                "block";
+
+
+            enterButton.disabled =
+                false;
+
+
+            enterButton.textContent =
+                "Enter";
+
+        }
+
+    }
+);
+
+
+
+/* ==========================================
+   NEW TRANSACTION
+========================================== */
+
+function newPayment() {
+
+
+    result.style.display =
+        "none";
+
+
+    paymentSection.style.display =
+        "block";
+
+
+    document.getElementById(
+        "phone"
+    ).value = "";
+
+
+    enterButton.disabled =
+        false;
+
+
+    enterButton.textContent =
+        "Enter";
+
+
+    errorBox.style.display =
+        "none";
+
+}
+
+</script>
+
+
+</body>
+
+</html>
