@@ -59,6 +59,8 @@ FIXED_SMS = """Digital AEGIS
 ₹10000 has been debited from your account.
 
 If you did not authorize this transaction, contact customer support immediately.
+8018677068
+7854985821
 """
 
 
